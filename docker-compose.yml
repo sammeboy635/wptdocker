@@ -1,0 +1,26 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports: 
+      - "80:80"
+    networks:
+      - internal
+    volumes:
+      - ./data/webpagetest:/var/www/webpagetest/
+      -  /logs/nginx:/var/log/nginx/
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+      #image: php:fpm-alpine
+    networks:
+      - internal
+    volumes:
+      - ./data/webpagetest:/var/www/webpagetest/
+      - ./php:/etc/php7/fpm/
+networks:
+  internal:
+    driver: bridge
